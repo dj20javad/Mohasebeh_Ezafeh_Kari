@@ -7,10 +7,10 @@
   "display": "standalone",
   "start_url": "/",
   "short_name": "EzafehKari",
-  "theme_color": "#FFFFFF",
+  "theme_color": "#FF8200",
   "description": "این نرم افزار برای ثبت اضافه کاری پرسنل شرکت آلومینای ایران طراحی شده است",
   "orientation": "any",
-  "background_color": "#FFFFFF",
+  "background_color": "#414141",
   "prefer_related_applications": false,
   "display_override": [
     "window-controls-overlay"
@@ -73,7 +73,7 @@
       "url": "/",
       "icons": [
         {
-          "src": "/assets/icon/256.png",
+          "src": "256.png",
           "sizes": "256x256"
         }
       ]

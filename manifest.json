@@ -1,22 +1,28 @@
 {
-  "name": "سامانه ثبت اضافه کاری",
-  "short_name": "اضافه کاری",
-  "description": "یک وب اپلیکیشن ساده برای ثبت و مدیریت ساعات اضافه کاری.",
-  "start_url": ".",
+  "background_color": "#676767",
+  "dir": "ltr",
   "display": "standalone",
-  "background_color": "#f3f4f6",
-  "theme_color": "#4a90e2",
+  "name": "Sabt Ezafeh Kari",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Sabt Ezafeh Kari",
+  "start_url": "/",
+  "theme_color": "#ff6600",
   "icons": [
     {
-      "src": "./192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "./512.png",
+      "src": "512.png",
+      "type": "image/png",
       "sizes": "512x512",
-      "type": "image/png"
+      "isSquare": false,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 250,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
     }
-  ]
+  ],
+  "id": "Sabt.Ezafeh.Kari",
+  "description": "ثبت هوشمند اضافه کاری"
 }
-

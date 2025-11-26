@@ -5,22 +5,14 @@
   "name": "Sabt Ezafeh Kari",
   "orientation": "any",
   "scope": "/",
-  "short_name": "Sabt Ezafeh Kari",
-  "start_url": "/",
+  "short_name": "Sabt_Ezafeh_Kari",
+  "start_url": ".",
   "theme_color": "#ff6600",
   "icons": [
     {
       "src": "512.png",
       "type": "image/png",
-      "sizes": "512x512",
-      "isSquare": false,
-      "isPng": true,
-      "isWebp": false,
-      "isJpg": false,
-      "width": 250,
-      "is512x512": false,
-      "is256x256": false,
-      "is192x192": false
+      "sizes": "512x512"
     }
   ],
   "id": "Sabt.Ezafeh.Kari",

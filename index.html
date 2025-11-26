@@ -127,25 +127,34 @@
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                    <button id="ai-analyze-btn" class="bg-indigo-100 text-indigo-700 font-bold py-2 px-4 rounded-lg hover:bg-indigo-200 text-sm border border-indigo-200 flex justify-center items-center gap-2">
-                        <span>📊</span> تحلیل هوشمند
-                    </button>
-                    <button id="export-btn" class="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 text-sm">خروجی اکسل</button>
-                    <button id="import-btn" class="bg-purple-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-purple-700 text-sm">ورود از اکسل</button>
-                    <button id="delete-all-btn" class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 text-sm">حذف همه</button>
-                    <input type="file" id="import-file" class="hidden" accept=".xlsx, .xls, .csv">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+                    <div class="flex gap-2">
+                        <button id="backup-btn" class="flex-1 bg-slate-700 text-white font-bold py-2 px-3 rounded-lg hover:bg-slate-800 text-xs flex justify-center items-center gap-1">💾 دانلود پشتیبان</button>
+                        <button id="restore-btn" class="flex-1 bg-slate-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-slate-700 text-xs flex justify-center items-center gap-1">♻️ بازگردانی</button>
+                        <input type="file" id="restore-file" class="hidden" accept=".json">
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="export-btn" class="flex-1 bg-green-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-green-700 text-xs">خروجی اکسل</button>
+                        <button id="import-btn" class="flex-1 bg-purple-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-purple-700 text-xs">ورود اکسل</button>
+                        <input type="file" id="import-file" class="hidden" accept=".xlsx, .xls, .csv">
+                    </div>
+                    <div class="flex gap-2">
+                         <button id="ai-analyze-btn" class="flex-1 bg-indigo-100 text-indigo-700 font-bold py-2 px-3 rounded-lg hover:bg-indigo-200 text-xs border border-indigo-200 flex justify-center items-center gap-1">📊 تحلیل هوشمند</button>
+                         <button id="delete-all-btn" class="w-auto bg-red-100 text-red-600 font-bold py-2 px-3 rounded-lg hover:bg-red-200 text-xs">حذف همه</button>
+                    </div>
                 </div>
 
                 <div class="overflow-x-auto rounded-lg border border-gray-200">
                     <table class="w-full text-center">
                         <thead class="bg-gray-100 text-gray-600">
                             <tr>
-                                <th class="p-3 text-sm font-bold">تاریخ</th>
-                                <th class="p-3 text-sm font-bold">شیفت</th>
-                                <th class="p-3 text-sm font-bold">زمان</th>
-                                <th class="p-3 text-sm font-bold">مدت</th>
-                                <th class="p-3 text-sm font-bold">عملیات</th>
+                                <th class="p-3 text-sm font-bold whitespace-nowrap">تاریخ</th>
+                                <th class="p-3 text-sm font-bold whitespace-nowrap">شیفت</th>
+                                <th class="p-3 text-sm font-bold whitespace-nowrap">جانشین</th>
+                                <th class="p-3 text-sm font-bold whitespace-nowrap min-w-[150px]">توضیحات</th>
+                                <th class="p-3 text-sm font-bold whitespace-nowrap">زمان</th>
+                                <th class="p-3 text-sm font-bold whitespace-nowrap">مدت</th>
+                                <th class="p-3 text-sm font-bold whitespace-nowrap">عملیات</th>
                             </tr>
                         </thead>
                         <tbody id="overtime-records" class="divide-y divide-gray-100"></tbody>
@@ -158,7 +167,7 @@
         <footer class="text-center mt-12 text-gray-400 text-xs pb-8">
             <button id="change-settings-btn" class="text-blue-500 hover:underline mb-2">تغییر تنظیمات پایه</button>
             <p>برنامه نویسی توسط <a href="https://wa.me/+989120929125" target="_blank" class="text-blue-600 hover:underline font-bold">جواد ابراهیمی</a></p>
-            <p class="mt-1 opacity-50">نسخه 11.0.2 (اصلاح نهایی)</p>
+            <p class="mt-1 opacity-50">نسخه 11.0.3</p>
         </footer>
     </div>
 
@@ -291,7 +300,7 @@
         import { GoogleGenerativeAI } from "@google/generative-ai";
         const MODEL_NAME = "gemini-2.5-flash-preview-09-2025";
         const getKey = () => {
-            const settings = JSON.parse(localStorage.getItem('overtime_settings_v25'));
+            const settings = JSON.parse(localStorage.getItem('overtime_settings_v11_0_3'));
             return settings?.apiKey || "";
         };
         window.geminiSmartFill = async (text, todayJalali) => {
@@ -324,16 +333,16 @@
                 const appView = $('app-view');
                 const settingsView = $('settings-view');
                 
-                // --- Helper: Convert Persian/Arabic digits to English ---
                 const toEnglishDigits = (str) => {
                     if (!str) return str;
                     return str.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
                 };
 
-                // --- Consolidated Data Migration (v25 for clean state) ---
-                let overtimeData = JSON.parse(localStorage.getItem('overtime_data_v25')) || [];
+                // --- Data Migration (To v11.0.3) ---
+                // We verify if v11_0_3 exists, if not, we pull from v32, v28, etc.
+                let overtimeData = JSON.parse(localStorage.getItem('overtime_data_v11_0_3')) || [];
                 if (overtimeData.length === 0) {
-                    const prevKeys = ['overtime_data_v19', 'overtime_data_v18', 'overtime_data_v17', 'overtime_data_v14'];
+                    const prevKeys = ['overtime_data_v32', 'overtime_data_v28', 'overtime_data_v25', 'overtime_data_v19', 'overtime_data_v14'];
                     for (let key of prevKeys) {
                         const oldData = JSON.parse(localStorage.getItem(key));
                         if (oldData && Array.isArray(oldData) && oldData.length > 0) {
@@ -342,11 +351,10 @@
                             break; 
                         }
                     }
-                    localStorage.setItem('overtime_data_v25', JSON.stringify(overtimeData));
+                    localStorage.setItem('overtime_data_v11_0_3', JSON.stringify(overtimeData));
                 }
                 
-                // Update settings key to v25
-                let userSettings = JSON.parse(localStorage.getItem('overtime_settings_v25')) || JSON.parse(localStorage.getItem('overtime_settings_v19')) || JSON.parse(localStorage.getItem('overtime_settings_v12'));
+                let userSettings = JSON.parse(localStorage.getItem('overtime_settings_v11_0_3')) || JSON.parse(localStorage.getItem('overtime_settings_v32')) || JSON.parse(localStorage.getItem('overtime_settings_v28')) || JSON.parse(localStorage.getItem('overtime_settings_v12'));
                 let confirmCallback = null;
                 let editingRecordId = null;
 
@@ -357,7 +365,6 @@
                     if (!userSettings || !userSettings.shiftPattern) return null;
                     const pattern = userSettings.shiftPattern;
                     const cleanDateStr = toEnglishDigits(targetDateStr);
-                    // Use startOf('day') to prevent time-based issues
                     const targetDate = moment(cleanDateStr, 'jYYYY/jMM/DD').startOf('day');
                     if (!targetDate.isValid()) return null;
 
@@ -384,8 +391,8 @@
                     return null;
                 };
 
-                const saveData = () => localStorage.setItem('overtime_data_v25', JSON.stringify(overtimeData));
-                const saveSettings = () => localStorage.setItem('overtime_settings_v25', JSON.stringify(userSettings));
+                const saveData = () => localStorage.setItem('overtime_data_v11_0_3', JSON.stringify(overtimeData));
+                const saveSettings = () => localStorage.setItem('overtime_settings_v11_0_3', JSON.stringify(userSettings));
                 const calculateDuration = (s, e) => { s = parseFloat(s)||0; e = parseFloat(e)||0; return (e > s) ? (e - s) : (24 - s + e); };
 
                 const showModal = (title, body, btnText, btnColor, onConfirm = null) => {
@@ -427,7 +434,7 @@
                             if (db !== da) return db.localeCompare(da);
                             return (parseFloat(a.startTime)||0) - (parseFloat(b.startTime)||0);
                         });
-                    } catch (e) { console.error("Sort error", e); sorted = overtimeData; }
+                    } catch (e) { sorted = overtimeData; }
 
                     if (sorted.length === 0) $('no-records').classList.remove('hidden');
                     else $('no-records').classList.add('hidden');
@@ -437,11 +444,13 @@
                         if(r.id === editingRecordId) tr.classList.add('editing-row');
                         tr.className += " hover:bg-gray-50 transition border-b border-gray-100";
                         tr.innerHTML = `
-                            <td class="p-3 text-sm text-gray-700">${r.date || '-'}</td>
-                            <td class="p-3 text-sm text-gray-600">${shiftTypeMap[r.shiftType] || ''}</td>
-                            <td class="p-3 text-sm font-mono text-blue-600 font-bold" dir="ltr">${r.startTime}:00 - ${r.endTime}:00</td>
-                            <td class="p-3 text-sm font-bold text-gray-800">${calculateDuration(r.startTime, r.endTime)}ساعت</td>
-                            <td class="p-3 text-sm">
+                            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">${r.date || '-'}</td>
+                            <td class="p-3 text-sm text-gray-600 whitespace-nowrap">${shiftTypeMap[r.shiftType] || ''}</td>
+                            <td class="p-3 text-sm text-gray-500 whitespace-nowrap">${r.successor || '-'}</td>
+                            <td class="p-3 text-sm text-gray-500 whitespace-nowrap min-w-[150px]" title="${r.description}">${r.description || '-'}</td>
+                            <td class="p-3 text-sm font-mono text-blue-600 font-bold whitespace-nowrap" dir="ltr">${r.startTime}:00 - ${r.endTime}:00</td>
+                            <td class="p-3 text-sm font-bold text-gray-800 whitespace-nowrap">${calculateDuration(r.startTime, r.endTime)}ساعت</td>
+                            <td class="p-3 text-sm whitespace-nowrap">
                                 <button class="edit-btn text-blue-600 hover:text-blue-800 mx-1 font-medium" data-id="${r.id}">ویرایش</button>
                                 <span class="text-gray-300">|</span>
                                 <button class="del-btn text-red-500 hover:text-red-700 mx-1 font-medium" data-id="${r.id}">حذف</button>
@@ -473,7 +482,200 @@
                     } else $('auto-shift-display').textContent = ''; 
                 };
 
-                // AI Handlers
+                // --- Listeners ---
+                const init = () => {
+                    const ts = [$('start-time'), $('end-time')]; if(ts[0].options.length === 0) for(let i=1;i<=24;i++) ts.forEach(s=>s.add(new Option(`${i}:00`, i)));
+                    const setTodayForInput = (id) => { const el = $(id); if (el && !el.value) el.value = moment().locale('fa').format('YYYY/MM/DD'); };
+
+                    $('change-settings-btn').addEventListener('click', () => { 
+                        if(userSettings?.apiKey) $('api-key-input').value = userSettings.apiKey;
+                        setTodayForInput('reference-date');
+                        $('app-view').classList.add('hidden-view'); $('settings-view').classList.remove('hidden-view'); 
+                    });
+                    
+                    $('settings-form').addEventListener('submit', (e) => { 
+                        e.preventDefault(); 
+                        const p = $('shift-pattern').value; 
+                        if(p !== 'day_worker' && !$('reference-date').value) return alert('تاریخ مرجع!'); 
+                        
+                        userSettings = { 
+                            complex: $('complex-select').value, shiftPattern: p, 
+                            referenceDate: $('reference-date').value, referenceShiftType: $('reference-shift-type').value, 
+                            referenceShiftDay: parseInt($('reference-shift-day').value)||1, 
+                            apiKey: $('api-key-input').value.trim() 
+                        };
+                        
+                        saveSettings();
+                        $('settings-view').classList.add('hidden-view');
+                        $('app-view').classList.remove('hidden-view');
+                        resetForm();
+                    });
+                    
+                    // Update Sets Logic
+                    const updateSets = () => { 
+                        const p = $('shift-pattern').value; 
+                        if(p === 'day_worker') $('calibration-wrapper').classList.add('hidden'); 
+                        else { 
+                            $('calibration-wrapper').classList.remove('hidden'); 
+                            if(p === 'two_shift') { $('reference-shift-type').innerHTML = '<option value="morning">هفته صبح</option><option value="evening">هفته عصر</option>'; $('ref-day-wrapper').classList.add('hidden'); } 
+                            else { $('reference-shift-type').innerHTML = '<option value="evening">عصر</option><option value="morning">صبح</option><option value="night">شب</option><option value="rest">استراحت</option>'; $('ref-day-wrapper').classList.remove('hidden'); } 
+                        } 
+                    };
+                    $('shift-pattern').addEventListener('change', updateSets); 
+                    
+                    // Complex Logic
+                    $('complex-select').addEventListener('change', () => { 
+                        const isShemsh = $('complex-select').value === 'shemsh';
+                        $('five-shift-option').style.display = isShemsh ? 'block' : 'none';
+                        if(!isShemsh && $('shift-pattern').value === 'five_shift') { $('shift-pattern').value = 'four_shift'; updateSets(); }
+                    });
+                    
+                    const handleDateSelect = (d, elementId) => { setTimeout(() => { const val = document.getElementById(elementId).value; if(elementId === 'date-input' && val) updateShiftDisplay(val); }, 100); };
+                    kamaDatepicker('date-input', { twodigit: true, closeAfterSelect: true, gotoToday: true, onselect: (d) => handleDateSelect(d, 'date-input') });
+                    kamaDatepicker('reference-date', { twodigit: true, closeAfterSelect: true, gotoToday: true });
+
+                    resetForm(); renderRecords(); updateSets();
+                    
+                    if($('complex-select').value === 'shemsh') $('five-shift-option').style.display='block';
+                    setTodayForInput('reference-date');
+                };
+
+                if(!userSettings) {
+                    settingsView.classList.remove('hidden-view'); 
+                    // Default date in settings if new user
+                    setTimeout(() => {
+                         const el = document.getElementById('reference-date');
+                         if(el) el.value = moment().locale('fa').format('YYYY/MM/DD');
+                    }, 500);
+                } else { appView.classList.remove('hidden-view'); }
+                
+                init();
+
+                // Handlers
+                $('overtime-form').addEventListener('submit', (e) => {
+                    e.preventDefault(); 
+                    const date = $('date-input').value; if (!date) return showModal('خطا', 'تاریخ!', 'باشه', 'bg-red-500');
+                    const record = { 
+                        id: editingRecordId || (Date.now() + Math.random()),
+                        date, shiftType: $('shift-type').value, startTime: $('start-time').value, endTime: $('end-time').value, 
+                        successor: $('successor-input').value.trim(), description: $('description').value.trim() 
+                    };
+                    
+                    if (editingRecordId) {
+                        const idx = overtimeData.findIndex(r => r.id == editingRecordId);
+                        if(idx > -1) overtimeData[idx] = record;
+                    } else {
+                        overtimeData.push(record);
+                    }
+                    saveData();
+                    resetForm();
+                    renderRecords();
+                });
+
+                $('cancel-edit-btn').addEventListener('click', resetForm);
+                
+                $('overtime-records').addEventListener('click', (e) => {
+                    const btn = e.target.closest('button'); if (!btn) return; 
+                    const id = btn.dataset.id;
+                    if (btn.classList.contains('del-btn')) {
+                        showModal('حذف', 'مطمئنید؟', 'بله', 'bg-red-600', () => { 
+                            overtimeData = overtimeData.filter(r => r.id != id);
+                            if(editingRecordId == id) resetForm();
+                            saveData();
+                            renderRecords();
+                            hideModal(); 
+                        });
+                    }
+                    if (btn.classList.contains('edit-btn')) {
+                        const rec = overtimeData.find(r => r.id == id); if (!rec) return;
+                        editingRecordId = id; 
+                        $('editing-badge').classList.remove('hidden'); 
+                        $('date-input').value = rec.date; $('shift-type').value = rec.shiftType; 
+                        $('start-time').value = rec.startTime; $('end-time').value = rec.endTime; 
+                        $('successor-input').value = rec.successor; $('description').value = rec.description; 
+                        updateShiftDisplay(rec.date);
+                        $('submit-btn').textContent = 'ذخیره'; $('submit-btn').classList.replace('bg-blue-600', 'bg-yellow-500'); 
+                        $('cancel-edit-btn').classList.remove('hidden'); 
+                        renderRecords(); window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+
+                $('modal-cancel-btn').addEventListener('click', hideModal); 
+                $('modal-confirm-btn').addEventListener('click', () => { if(confirmCallback) confirmCallback(); else hideModal(); });
+                $('delete-all-btn').addEventListener('click', () => showModal('حذف همه', 'همه پاک شوند؟', 'بله', 'bg-red-600', () => { 
+                    overtimeData = [];
+                    saveData();
+                    renderRecords();
+                    hideModal(); 
+                }));
+
+                // Backup Logic
+                $('backup-btn').addEventListener('click', () => {
+                    const data = { settings: userSettings, records: overtimeData, version: '11.0.3' };
+                    const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a'); a.href = url; a.download = `Overtime_Backup_${moment().format('YYYYMMDD')}.json`;
+                    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                });
+                $('restore-btn').addEventListener('click', () => $('restore-file').click());
+                $('restore-file').addEventListener('change', (e) => {
+                    const f = e.target.files[0]; if(!f) return;
+                    const r = new FileReader();
+                    r.onload = (ev) => {
+                        try {
+                            const backup = JSON.parse(ev.target.result);
+                            if(backup.settings && backup.records) {
+                                userSettings = backup.settings; overtimeData = backup.records;
+                                saveData(); saveSettings(); renderRecords(); alert('بازگردانی موفق بود. صفحه رفرش می‌شود.'); location.reload();
+                            } else alert('فایل نامعتبر است');
+                        } catch(err) { alert('خطا در فایل'); }
+                    }; r.readAsText(f); e.target.value = '';
+                });
+
+                // Export Logic
+                $('export-btn').addEventListener('click', () => {
+                    if (!overtimeData.length) return alert('داده‌ای نیست');
+                    
+                    const exportData = overtimeData.map(r => ({
+                        'تاریخ': r.date,
+                        'نوع شیفت': shiftTypeMap[r.shiftType] || r.shiftType,
+                        'ساعت شروع': r.startTime,
+                        'ساعت پایان': r.endTime,
+                        'جانشین': r.successor,
+                        'توضیحات': r.description
+                    }));
+
+                    const ws = XLSX.utils.json_to_sheet(exportData);
+                    const wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws, "Overtime");
+                    XLSX.writeFile(wb, "Overtime.xlsx");
+                });
+
+                // Import Logic
+                $('import-btn').addEventListener('click', () => $('import-file').click());
+                $('import-file').addEventListener('change', (e) => {
+                    const f = e.target.files[0]; if(!f) return;
+                    const r = new FileReader();
+                    r.onload = (ev) => {
+                        try {
+                            const wb = XLSX.read(new Uint8Array(ev.target.result), {type:'array'});
+                            const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+                            if(json.length) {
+                                json.forEach(row => {
+                                    const dateVal = row['تاریخ'] || row['date'];
+                                    if(dateVal) {
+                                        const shiftName = row['نوع شیفت'] || row['shiftType'];
+                                        const shiftKey = Object.keys(shiftTypeMap).find(k => shiftTypeMap[k] === shiftName) || 'morning';
+                                        overtimeData.push({ id: Date.now() + Math.random(), date: dateVal, shiftType: shiftKey, startTime: row['ساعت شروع'] || row['startTime'] || 7, endTime: row['ساعت پایان'] || row['endTime'] || 16, successor: row['جانشین'] || row['successor'] || '', description: row['توضیحات'] || row['description'] || '' });
+                                    }
+                                });
+                                saveData(); renderRecords(); alert('اطلاعات با موفقیت وارد شد');
+                            }
+                        } catch(err) { alert('خطا در فایل اکسل'); }
+                    }; r.readAsArrayBuffer(f); e.target.value = '';
+                });
+
+                // AI Buttons Logic
                 $('open-smart-fill').addEventListener('click', () => { $('smart-fill-modal').classList.remove('hidden'); setTimeout(() => $('smart-fill-modal').classList.remove('opacity-0'), 10); });
                 $('close-smart-fill').addEventListener('click', () => { $('smart-fill-modal').classList.add('opacity-0'); setTimeout(() => $('smart-fill-modal').classList.add('hidden'), 300); });
                 $('process-smart-fill').addEventListener('click', async () => {
@@ -489,23 +691,11 @@
                         $('close-smart-fill').click(); $('smart-fill-input').value = ''; showModal('موفق', 'اطلاعات پر شد.', 'باشه', 'bg-green-600');
                     } catch(err) { alert('خطا: ' + err.message); } finally { $('smart-fill-loading').classList.add('hidden'); }
                 });
-
-                const micBtn = $('mic-btn');
-                if ('webkitSpeechRecognition' in window) {
-                    const recognition = new webkitSpeechRecognition(); recognition.lang = 'fa-IR'; recognition.continuous = false; recognition.interimResults = false;
-                    micBtn.addEventListener('click', () => { if (micBtn.classList.contains('mic-active')) recognition.stop(); else recognition.start(); });
-                    recognition.onstart = () => { micBtn.classList.add('mic-active'); $('mic-status').classList.remove('hidden'); };
-                    recognition.onend = () => { micBtn.classList.remove('mic-active'); $('mic-status').classList.add('hidden'); };
-                    recognition.onresult = (event) => { $('smart-fill-input').value += (event.results[0][0].transcript + ' '); };
-                    recognition.onerror = (e) => { alert('خطا: ' + e.error); micBtn.classList.remove('mic-active'); $('mic-status').classList.add('hidden'); }
-                } else micBtn.style.display = 'none';
-
                 $('ai-rewrite-btn').addEventListener('click', async () => {
                     const txt = $('description').value; if(!txt) return alert('متن خالی است');
                     $('rewrite-loading').classList.remove('hidden');
                     try { const formal = await window.geminiRewrite(txt); $('description').value = formal.trim(); } catch(err) { alert(err.message); } finally { $('rewrite-loading').classList.add('hidden'); }
                 });
-
                 $('ai-analyze-btn').addEventListener('click', async () => {
                     if(overtimeData.length === 0) return alert('داده‌ای نیست');
                     $('analysis-modal').classList.remove('hidden'); setTimeout(() => $('analysis-modal').classList.remove('opacity-0'), 10);
@@ -517,111 +707,8 @@
                 });
                 $('close-analysis').addEventListener('click', () => { $('analysis-modal').classList.add('opacity-0'); setTimeout(() => $('analysis-modal').classList.add('hidden'), 300); });
 
-                $('overtime-form').addEventListener('submit', (e) => {
-                    e.preventDefault(); const date = $('date-input').value;
-                    if (!date) return showModal('خطا', 'تاریخ!', 'باشه', 'bg-red-500');
-                    const sTime = $('start-time').value; const eTime = $('end-time').value; const sType = $('shift-type').value;
-                    if (!validateOvertime(date, sType, sTime, eTime, editingRecordId)) return;
-                    const record = { id: editingRecordId || (Date.now()+Math.random()), date, shiftType: sType, startTime: sTime, endTime: eTime, successor: $('successor-input').value.trim(), description: $('description').value.trim() };
-                    if (editingRecordId) { const idx = overtimeData.findIndex(r => r.id === editingRecordId); if (idx > -1) overtimeData[idx] = record; } else overtimeData.push(record);
-                    saveData(); resetForm(); renderRecords();
-                });
-                $('cancel-edit-btn').addEventListener('click', resetForm);
-                $('overtime-records').addEventListener('click', (e) => {
-                    const btn = e.target.closest('button'); if (!btn) return; const id = btn.dataset.id;
-                    if (btn.classList.contains('del-btn')) showModal('حذف', 'مطمئنید؟', 'بله', 'bg-red-600', () => { overtimeData = overtimeData.filter(r => r.id != id); if(editingRecordId == id) resetForm(); saveData(); renderRecords(); hideModal(); });
-                    if (btn.classList.contains('edit-btn')) {
-                        const rec = overtimeData.find(r => r.id == id); if (!rec) return;
-                        editingRecordId = rec.id; $('editing-badge').classList.remove('hidden'); $('date-input').value = rec.date; $('shift-type').value = rec.shiftType; $('start-time').value = rec.startTime; $('end-time').value = rec.endTime; $('successor-input').value = rec.successor; $('description').value = rec.description; updateShiftDisplay(rec.date);
-                        $('submit-btn').textContent = 'ذخیره'; $('submit-btn').classList.replace('bg-blue-600', 'bg-yellow-500'); $('cancel-edit-btn').classList.remove('hidden'); renderRecords(); window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                });
-                $('modal-cancel-btn').addEventListener('click', hideModal); $('modal-confirm-btn').addEventListener('click', () => { if(confirmCallback) confirmCallback(); else hideModal(); });
-                $('delete-all-btn').addEventListener('click', () => showModal('حذف همه', 'همه پاک شوند؟', 'بله', 'bg-red-600', () => { overtimeData = []; saveData(); renderRecords(); hideModal(); }));
-                $('export-btn').addEventListener('click', () => { if (!overtimeData.length) return alert('داده‌ای نیست'); const ws = XLSX.utils.json_to_sheet(overtimeData); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Overtime"); XLSX.writeFile(wb, "Overtime.xlsx"); });
-                $('import-btn').addEventListener('click', () => $('import-file').click());
-                $('import-file').addEventListener('change', (e) => {
-                    const f = e.target.files[0]; if(!f) return;
-                    const r = new FileReader();
-                    r.onload = (ev) => {
-                        try {
-                            const wb = XLSX.read(new Uint8Array(ev.target.result), {type:'array'});
-                            const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-                            if(json.length) {
-                                json.forEach(row => { if(row['date'] || row['تاریخ']) overtimeData.push({ id: Date.now()+Math.random(), date: row['date']||row['تاریخ'], shiftType: 'rest', startTime: row['startTime']||7, endTime: row['endTime']||16, successor: '', description: '' }); });
-                                saveData(); renderRecords(); alert('وارد شد');
-                            }
-                        } catch(err) { alert('خطا در فایل'); }
-                    }; r.readAsArrayBuffer(f);
-                });
-
-                const init = () => {
-                    const ts = [$('start-time'), $('end-time')]; if(ts[0].options.length === 0) for(let i=1;i<=24;i++) ts.forEach(s=>s.add(new Option(`${i}:00`, i)));
-                    
-                    // FIX: Helper to set today's date in inputs
-                    const setTodayForInput = (id) => {
-                        const el = $(id);
-                        if (el && !el.value) el.value = moment().locale('fa').format('YYYY/MM/DD');
-                    };
-
-                    $('change-settings-btn').addEventListener('click', () => { 
-                        if(userSettings?.apiKey) $('api-key-input').value = userSettings.apiKey;
-                        // Ensure date is populated every time settings opens if empty
-                        setTodayForInput('reference-date');
-                        settingsView.classList.remove('hidden-view'); appView.classList.add('hidden-view'); 
-                    });
-                    
-                    $('settings-form').addEventListener('submit', (e) => { e.preventDefault(); const p = $('shift-pattern').value; if(p !== 'day_worker' && !$('reference-date').value) return alert('تاریخ مرجع!'); userSettings = { complex: $('complex-select').value, shiftPattern: p, referenceDate: $('reference-date').value, referenceShiftType: $('reference-shift-type').value, referenceShiftDay: parseInt($('reference-shift-day').value)||1, apiKey: $('api-key-input').value.trim() }; saveData(); settingsView.classList.add('hidden-view'); appView.classList.remove('hidden-view'); resetForm(); });
-                    
-                    const updateSets = () => { 
-                        const p = $('shift-pattern').value; 
-                        if(p === 'day_worker') $('calibration-wrapper').classList.add('hidden'); 
-                        else { 
-                            $('calibration-wrapper').classList.remove('hidden'); 
-                            if(p === 'two_shift') { $('reference-shift-type').innerHTML = '<option value="morning">هفته صبح</option><option value="evening">هفته عصر</option>'; $('ref-day-wrapper').classList.add('hidden'); } 
-                            else { $('reference-shift-type').innerHTML = '<option value="evening">عصر</option><option value="morning">صبح</option><option value="night">شب</option><option value="rest">استراحت</option>'; $('ref-day-wrapper').classList.remove('hidden'); } 
-                        } 
-                    };
-                    $('shift-pattern').addEventListener('change', updateSets); 
-                    
-                    // FIX: Correct Complex Logic
-                    $('complex-select').addEventListener('change', () => { 
-                        const isShemsh = $('complex-select').value === 'shemsh';
-                        $('five-shift-option').style.display = isShemsh ? 'block' : 'none';
-                        // If switching back to Alumina while on 5-shift, reset to 4-shift
-                        if(!isShemsh && $('shift-pattern').value === 'five_shift') {
-                            $('shift-pattern').value = 'four_shift';
-                            updateSets();
-                        }
-                    });
-                    
-                    // FIX: Improved Datepicker Integration
-                    const handleDateSelect = (d, elementId) => {
-                        // Wait slightly for input to populate, then read value to handle Persian digits/format correctly
-                        setTimeout(() => {
-                            const val = document.getElementById(elementId).value;
-                            if(elementId === 'date-input') updateShiftDisplay(val);
-                        }, 100);
-                    };
-
-                    kamaDatepicker('date-input', { twodigit: true, closeAfterSelect: true, gotoToday: true, onselect: (d) => handleDateSelect(d, 'date-input') });
-                    kamaDatepicker('reference-date', { twodigit: true, closeAfterSelect: true, gotoToday: true });
-
-                    resetForm(); renderRecords(); updateSets();
-                    
-                    // Initialize logic on load
-                    if($('complex-select').value === 'shemsh') $('five-shift-option').style.display='block';
-                    setTodayForInput('reference-date'); // Populate on first load
-                };
-
-                if(!userSettings) settingsView.classList.remove('hidden-view'); else { appView.classList.remove('hidden-view'); }
-                
-                init();
-
             } catch(e) { console.error(e); alert('خطای سیستمی'); }
         });
     </script>
 </body>
 </html>
-
-

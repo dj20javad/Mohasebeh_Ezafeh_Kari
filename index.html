@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ثبت هوشمند اضافه کاری</title>
     
-    <link rel="apple-touch-icon" href="https://en.iranalumina.ir/wp-content/uploads/2017/09/Site-Logo1.png">
+    <link rel="apple-touch-icon" href="logo.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,6 +51,11 @@
     <script src="moment-timezone-with-data.min.js"></script>
     <script src="jalali-moment.browser.js"></script>
     <script src="xlsx.full.min.js"></script>
+	<script>
+  if (typeof navigator.serviceWorker !== 'undefined') {
+    navigator.serviceWorker.register('sw.js')
+  }
+	</script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 

@@ -3,59 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه هوشمند ثبت اضافه کاری + جمنای</title>
-    
-    <link rel="apple-touch-icon" href="https://en.iranalumina.ir/wp-content/uploads/2017/09/Site-Logo1.png">
-
+    <title>سامانه هوشمند ثبت اضافه کاری</title>
+    <link rel="apple-touch-icon" href="logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Kama Datepicker CSS -->
-	<link href="https://unpkg.com/kamadatepicker/dist/kamadatepicker.min.css" rel="stylesheet" />
-    
+    <link href="kamadatepicker.min.css" rel="stylesheet" />
     <style>
         body { font-family: 'Vazirmatn', sans-serif; background-color: #f3f4f6; }
-        .form-select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: left 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em;
-            padding-left: 2.5rem; -webkit-appearance: none; -moz-appearance: none; appearance: none;
-        }
-        .modal-backdrop { transition: opacity 0.3s ease; }
+        .form-select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: left 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; padding-left: 2.5rem; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
         .hidden-view { display: none !important; }
-        
         div[id^="bd-main-persian-date-picker-container"] { z-index: 9999 !important; }
-        
         .editing-row { background-color: #eff6ff !important; border-left: 4px solid #2563eb; }
-        
+        input[type="time"] { direction: ltr !important; text-align: center; }
         @keyframes sparkle { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
         .sparkle-icon { animation: sparkle 2s infinite; display: inline-block; }
-        
         @keyframes pulse-ring { 0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
         .mic-active { animation: pulse-ring 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; background-color: #fee2e2 !important; color: #dc2626 !important; border-color: #dc2626 !important; }
-
-        .prose h3 { font-weight: bold; color: #1e40af; margin-top: 1em; margin-bottom: 0.5em; }
-        .prose ul { list-style-type: disc; padding-right: 1.5em; margin-bottom: 1em; }
         .prose p { margin-bottom: 0.5em; line-height: 1.6; }
     </style>
-    
-    <script type="importmap">
-      { "imports": { "@google/generative-ai": "https://esm.run/@google/generative-ai" } }
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://unpkg.com/kamadatepicker/dist/kamadatepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
-    <script src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="kamadatepicker.min.js"></script>
+    <script src="moment.min.js"></script>
+    <script src="moment-timezone-with-data.min.js"></script>
+    <script src="jalali-moment.browser.js"></script>
+    <script src="xlsx.full.min.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
     <div id="app-view" class="container mx-auto p-4 md:p-8 max-w-4xl hidden-view">
         <header class="text-center mb-8 flex flex-col items-center">
-            <img src="https://en.iranalumina.ir/wp-content/uploads/2017/09/Site-Logo1.png" alt="لوگو" class="h-[42px] w-[42px] mb-4 object-contain" onerror="this.src='https://placehold.co/42x42/cccccc/ffffff?text=IAC'">
+            <img src="logo.png" alt="لوگو" class="h-[42px] w-[42px] mb-4 object-contain" onerror="this.src='https://placehold.co/42x42/cccccc/ffffff?text=IAC'">
             <h1 class="text-2xl font-bold text-gray-800">شرکت آلومینای ایران</h1>
             <p class="text-lg text-gray-600">سامانه هوشمند ثبت اضافه کاری</p>
         </header>
@@ -77,7 +56,6 @@
                         <p id="auto-shift-display" class="text-sm text-blue-600 mt-2 text-center font-semibold h-5 min-h-[1.25rem]"></p>
                     </div>
                     <div>
-                        <!-- اینجا تغییر کرد: عنوان فیلد عوض شد -->
                         <label for="shift-type" class="block mb-2 font-medium text-gray-700">شیفت کاری امروز من</label>
                         <select id="shift-type" class="w-full p-3 border border-gray-300 rounded-lg form-select focus:ring-2 focus:ring-blue-500 outline-none">
                             <option value="morning">شیفت صبح</option>
@@ -90,11 +68,11 @@
                     </div>
                     <div>
                         <label for="start-time" class="block mb-2 font-medium text-gray-700">ساعت شروع</label>
-                        <input type="time" id="start-time" class="w-full p-3 border border-gray-300 rounded-lg text-center bg-white focus:ring-2 focus:ring-blue-500 outline-none dir-ltr">
+                        <input type="time" id="start-time" class="w-full p-3 border border-gray-300 rounded-lg text-center bg-white focus:ring-2 focus:ring-blue-500 outline-none" style="direction: ltr;">
                     </div>
                     <div>
                         <label for="end-time" class="block mb-2 font-medium text-gray-700">ساعت پایان</label>
-                        <input type="time" id="end-time" class="w-full p-3 border border-gray-300 rounded-lg text-center bg-white focus:ring-2 focus:ring-blue-500 outline-none dir-ltr">
+                        <input type="time" id="end-time" class="w-full p-3 border border-gray-300 rounded-lg text-center bg-white focus:ring-2 focus:ring-blue-500 outline-none" style="direction: ltr;">
                     </div>
                     <div class="md:col-span-2">
                         <label for="successor-input" class="block mb-2 font-medium text-gray-700">جانشین (اختیاری)</label>
@@ -167,7 +145,7 @@
         <footer class="text-center mt-12 text-gray-400 text-xs pb-8">
             <button id="change-settings-btn" class="text-blue-500 hover:underline mb-2">تغییر تنظیمات پایه</button>
             <p>برنامه نویسی توسط <a href="https://wa.me/+989120929125" target="_blank" class="text-blue-600 hover:underline font-bold">جواد ابراهیمی</a></p>
-            <p class="mt-1 opacity-50">نسخه 11.0.5 (اصلاح شده)</p>
+            <p class="mt-1 opacity-50">نسخه 11.0.7 (همگام‌سازی شیفت)</p>
         </footer>
     </div>
 
@@ -298,40 +276,7 @@
     </div>
 
     <script type="module">
-        import { GoogleGenerativeAI } from "@google/generative-ai";
-        const MODEL_NAME = "gemini-2.5-flash-preview-09-2025";
-        const getKey = () => {
-            const settings = JSON.parse(localStorage.getItem('overtime_settings_v11_0_5_mod'));
-            return settings?.apiKey || "";
-        };
-        
-        window.geminiTest = async (key) => {
-             const genAI = new GoogleGenerativeAI(key);
-             const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-             const result = await model.generateContent("Say Hello in Persian");
-             return result.response.text();
-        };
-
-        window.geminiSmartFill = async (text, todayJalali) => {
-            const apiKey = getKey(); if (!apiKey) throw new Error("کلید API یافت نشد.");
-            const genAI = new GoogleGenerativeAI(apiKey);
-            const model = genAI.getGenerativeModel({ model: MODEL_NAME, generationConfig: { responseMimeType: "application/json" } });
-            const prompt = `Extract fields from Persian input. Current Date: ${todayJalali}. JSON fields: date (YYYY/MM/DD), startTime (HH:MM format 24h), endTime (HH:MM format 24h), shiftType (morning/evening/night/rest/holiday/change_shift), successor, description. Input: "${text}"`;
-            const result = await model.generateContent(prompt); return JSON.parse(result.response.text());
-        };
-        window.geminiRewrite = async (text) => {
-            const apiKey = getKey(); if (!apiKey) throw new Error("کلید API یافت نشد.");
-            const genAI = new GoogleGenerativeAI(apiKey);
-            const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-            const result = await model.generateContent(`Rewrite formally in Persian: "${text}"`); return result.response.text();
-        };
-        window.geminiAnalyze = async (data) => {
-            const apiKey = getKey(); if (!apiKey) throw new Error("کلید API یافت نشد.");
-            const genAI = new GoogleGenerativeAI(apiKey);
-            const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-            const prompt = `Analyze JSON overtime data for Iranian worker: ${JSON.stringify(data)}. Return concise Persian analysis with Markdown: Summary, Trend, Health Tip, Estimation.`;
-            const result = await model.generateContent(prompt); return result.response.text();
-        };
+        // Use direct fetch, no import
     </script>
 
     <script>
@@ -352,11 +297,56 @@
                     const [h, m] = timeStr.split(':').map(Number);
                     return h + (m / 60);
                 };
+
+                // --- Helper: Call Gemini API directly via Fetch ---
+                const callGeminiAPI = async (prompt, apiKey, responseMimeType = "text/plain") => {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                    const body = {
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { responseMimeType: responseMimeType }
+                    };
+
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+
+                    if (!response.ok) {
+                        const err = await response.json();
+                        throw new Error(err.error?.message || 'خطا در ارتباط با سرور گوگل');
+                    }
+
+                    const data = await response.json();
+                    const text = data.candidates[0].content.parts[0].text;
+                    
+                    if (responseMimeType === "application/json") {
+                         const jsonMatch = text.match(/\{[\s\S]*\}/);
+                         if (jsonMatch) {
+                             return JSON.parse(jsonMatch[0]);
+                         }
+                         const cleanText = text.replace(/```json|```/g, '').trim();
+                         return JSON.parse(cleanText);
+                    }
+                    return text;
+                };
                 
-                // --- Data Migration (To v11.0.5_mod) ---
-                let overtimeData = JSON.parse(localStorage.getItem('overtime_data_v11_0_5_mod')) || [];
+                // --- Helper: Ensure HH:MM format ---
+                const formatTime = (timeStr) => {
+                    if(!timeStr) return "";
+                    let t = String(timeStr).trim();
+                    if(t.match(/^\d{1,2}$/)) return `${t.padStart(2,'0')}:00`;
+                    const parts = t.split(':');
+                    if(parts.length === 2) {
+                        return `${parts[0].padStart(2,'0')}:${parts[1].padStart(2,'0')}`;
+                    }
+                    return t;
+                }
+
+                // --- Data Migration (To v11.0.7) ---
+                let overtimeData = JSON.parse(localStorage.getItem('overtime_data_v11_0_7')) || [];
                 if (overtimeData.length === 0) {
-                    const prevKeys = ['overtime_data_v11_0_5', 'overtime_data_v11_0_4'];
+                    const prevKeys = ['overtime_data_v11_0_6', 'overtime_data_v11_0_5_mod', 'overtime_data_v11_0_5'];
                     for (let key of prevKeys) {
                         const oldData = localStorage.getItem(key);
                         if(oldData) {
@@ -375,10 +365,10 @@
                              } catch(e) {}
                         }
                     }
-                    localStorage.setItem('overtime_data_v11_0_5_mod', JSON.stringify(overtimeData));
+                    localStorage.setItem('overtime_data_v11_0_7', JSON.stringify(overtimeData));
                 }
                 
-                let userSettings = JSON.parse(localStorage.getItem('overtime_settings_v11_0_5_mod')) || JSON.parse(localStorage.getItem('overtime_settings_v11_0_5')) || {};
+                let userSettings = JSON.parse(localStorage.getItem('overtime_settings_v11_0_7')) || JSON.parse(localStorage.getItem('overtime_settings_v11_0_5')) || {};
                 let confirmCallback = null;
                 let editingRecordId = null;
 
@@ -417,8 +407,8 @@
                     return null;
                 };
 
-                const saveData = () => localStorage.setItem('overtime_data_v11_0_5_mod', JSON.stringify(overtimeData));
-                const saveSettings = () => localStorage.setItem('overtime_settings_v11_0_5_mod', JSON.stringify(userSettings));
+                const saveData = () => localStorage.setItem('overtime_data_v11_0_7', JSON.stringify(overtimeData));
+                const saveSettings = () => localStorage.setItem('overtime_settings_v11_0_7', JSON.stringify(userSettings));
                 const calculateDuration = (s, e) => { 
                     const sVal = timeToFloat(s); const eVal = timeToFloat(e);
                     let dur = (eVal > sVal) ? (eVal - sVal) : (24 - sVal + eVal);
@@ -507,7 +497,8 @@
                         const info = calculateShiftForDate(dateStr); 
                         if (info) { 
                             $('auto-shift-display').textContent = info.label; 
-                            if(!$('shift-type').value) $('shift-type').value = info.type; 
+                            // Always update the dropdown as per user request
+                            $('shift-type').value = info.type; 
                         } else $('auto-shift-display').textContent = ''; 
                     } catch(e){}
                 };
@@ -519,7 +510,8 @@
                         if(userSettings?.apiKey) $('api-key-input').value = userSettings.apiKey;
                         setTodayForInput('reference-date');
                         $('app-view').classList.add('hidden-view'); $('settings-view').classList.remove('hidden-view'); 
-                        updateSets(); 
+                        // Force update sets UI
+                        $('shift-pattern').dispatchEvent(new Event('change'));
                     });
                     
                     $('settings-form').addEventListener('submit', (e) => { 
@@ -542,16 +534,29 @@
                         } catch(err) { alert("خطا در ذخیره: " + err.message); }
                     });
                     
-                    const updateSets = () => { const p = $('shift-pattern').value; if(p === 'day_worker') $('calibration-wrapper').classList.add('hidden'); else { $('calibration-wrapper').classList.remove('hidden'); if(p === 'two_shift') { $('reference-shift-type').innerHTML = '<option value="morning">هفته صبح</option><option value="evening">هفته عصر</option>'; $('ref-day-wrapper').classList.add('hidden'); } else { $('reference-shift-type').innerHTML = '<option value="evening">عصر</option><option value="morning">صبح</option><option value="night">شب</option><option value="rest">استراحت</option>'; $('ref-day-wrapper').classList.remove('hidden'); } } };
+                    const updateSets = () => { 
+                        const p = $('shift-pattern').value; 
+                        if(p === 'day_worker') $('calibration-wrapper').classList.add('hidden'); 
+                        else { 
+                            $('calibration-wrapper').classList.remove('hidden'); 
+                            if(p === 'two_shift') { $('reference-shift-type').innerHTML = '<option value="morning">هفته صبح</option><option value="evening">هفته عصر</option>'; $('ref-day-wrapper').classList.add('hidden'); } 
+                            else { $('reference-shift-type').innerHTML = '<option value="evening">عصر</option><option value="morning">صبح</option><option value="night">شب</option><option value="rest">استراحت</option>'; $('ref-day-wrapper').classList.remove('hidden'); } 
+                        } 
+                    };
                     $('shift-pattern').addEventListener('change', updateSets); 
-                    $('complex-select').addEventListener('change', () => { const isShemsh = $('complex-select').value === 'shemsh'; $('five-shift-option').style.display = isShemsh ? 'block' : 'none'; if(!isShemsh && $('shift-pattern').value === 'five_shift') { $('shift-pattern').value = 'four_shift'; updateSets(); } });
+                    
+                    $('complex-select').addEventListener('change', () => { 
+                        const isShemsh = $('complex-select').value === 'shemsh'; 
+                        $('five-shift-option').style.display = isShemsh ? 'block' : 'none'; 
+                        if(!isShemsh && $('shift-pattern').value === 'five_shift') { $('shift-pattern').value = 'four_shift'; updateSets(); } 
+                    });
                     
                     $('test-api-btn').addEventListener('click', async () => {
                          const k = $('api-key-input').value.trim();
                          if(!k) return alert("کلید را وارد کنید");
                          $('test-api-btn').textContent = "در حال تست...";
                          try {
-                             await window.geminiTest(k);
+                             const res = await callGeminiAPI("Say hello in one word", k);
                              alert("اتصال موفق! ✅");
                          } catch(e) {
                              alert("خطا در اتصال ❌: " + e.message);
@@ -571,7 +576,15 @@
                     setTimeout(updateSets, 50);
                 };
 
-                if(!userSettings) { settingsView.classList.remove('hidden-view'); setTimeout(() => { const el = document.getElementById('reference-date'); if(el) el.value = moment().locale('fa').format('YYYY/MM/DD'); }, 500); } else { appView.classList.remove('hidden-view'); }
+                if(!userSettings || !userSettings.shiftPattern) { 
+                    $('settings-view').classList.remove('hidden-view'); 
+                    setTimeout(() => {
+                         const el = document.getElementById('reference-date');
+                         if(el) el.value = moment().locale('fa').format('YYYY/MM/DD');
+                         const p = document.getElementById('shift-pattern').value;
+                         if(p === 'day_worker') document.getElementById('calibration-wrapper').classList.add('hidden');
+                    }, 500); 
+                } else { appView.classList.remove('hidden-view'); }
                 
                 init();
 
@@ -590,12 +603,22 @@
                 $('overtime-records').addEventListener('click', (e) => {
                     const btn = e.target.closest('button'); if (!btn) return; const id = btn.dataset.id;
                     if (btn.classList.contains('del-btn')) showModal('حذف', 'مطمئنید؟', 'بله', 'bg-red-600', () => { overtimeData = overtimeData.filter(r => r.id != id); if(editingRecordId == id) resetForm(); saveData(); renderRecords(); hideModal(); });
-                    if (btn.classList.contains('edit-btn')) { const rec = overtimeData.find(r => r.id == id); if (!rec) return; editingRecordId = id; $('editing-badge').classList.remove('hidden'); $('date-input').value = rec.date; $('shift-type').value = rec.shiftType; $('start-time').value = rec.startTime; $('end-time').value = rec.endTime; $('successor-input').value = rec.successor; $('description').value = rec.description; updateShiftDisplay(rec.date); $('submit-btn').textContent = 'ذخیره'; $('submit-btn').classList.replace('bg-blue-600', 'bg-yellow-500'); $('cancel-edit-btn').classList.remove('hidden'); renderRecords(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+                    if (btn.classList.contains('edit-btn')) { 
+                        const rec = overtimeData.find(r => r.id == id); if (!rec) return; 
+                        editingRecordId = id; $('editing-badge').classList.remove('hidden'); 
+                        $('date-input').value = rec.date; 
+                        // Fix: Update display but override with stored type
+                        updateShiftDisplay(rec.date);
+                        $('shift-type').value = rec.shiftType; 
+                        $('start-time').value = rec.startTime; $('end-time').value = rec.endTime; $('successor-input').value = rec.successor; $('description').value = rec.description; 
+                        $('submit-btn').textContent = 'ذخیره'; $('submit-btn').classList.replace('bg-blue-600', 'bg-yellow-500'); $('cancel-edit-btn').classList.remove('hidden'); 
+                        window.scrollTo(0,0); 
+                    }
                 });
                 $('modal-cancel-btn').addEventListener('click', hideModal); $('modal-confirm-btn').addEventListener('click', () => { if(confirmCallback) confirmCallback(); else hideModal(); });
                 $('delete-all-btn').addEventListener('click', () => showModal('حذف همه', 'همه پاک شوند؟', 'بله', 'bg-red-600', () => { overtimeData = []; saveData(); renderRecords(); hideModal(); }));
                 
-                $('backup-btn').addEventListener('click', () => { const data = { settings: userSettings, records: overtimeData, version: '11.0.5_mod' }; const blob = new Blob([JSON.stringify(data)], {type: 'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `Overtime_Backup_${moment().format('YYYYMMDD')}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); });
+                $('backup-btn').addEventListener('click', () => { const data = { settings: userSettings, records: overtimeData, version: '11.0.7' }; const blob = new Blob([JSON.stringify(data)], {type: 'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `Overtime_Backup_${moment().format('YYYYMMDD')}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); });
                 $('restore-btn').addEventListener('click', () => $('restore-file').click());
                 $('restore-file').addEventListener('change', (e) => { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = (ev) => { try { const backup = JSON.parse(ev.target.result); if(backup.settings && backup.records) { userSettings = backup.settings; overtimeData = backup.records; saveData(); saveSettings(); renderRecords(); alert('بازگردانی موفق.'); location.reload(); } else alert('فایل نامعتبر'); } catch(err) { alert('خطا در فایل'); } }; r.readAsText(f); e.target.value = ''; });
                 $('export-btn').addEventListener('click', () => { if (!overtimeData.length) return alert('داده‌ای نیست'); const exportData = overtimeData.map(r => ({ 'تاریخ': r.date, 'نوع شیفت': shiftTypeMap[r.shiftType] || r.shiftType, 'ساعت شروع': r.startTime, 'ساعت پایان': r.endTime, 'جانشین': r.successor, 'توضیحات': r.description })); const ws = XLSX.utils.json_to_sheet(exportData); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Overtime"); XLSX.writeFile(wb, "Overtime.xlsx"); });
@@ -626,10 +649,13 @@
                     $('smart-fill-loading').classList.remove('hidden');
                     try {
                         const today = moment().locale('fa').format('YYYY/MM/DD');
-                        const result = await window.geminiSmartFill(text, today);
+                        const prompt = `Extract fields from Persian input. Current Date: ${today}. JSON fields: date (YYYY/MM/DD), startTime (HH:MM format 24h), endTime (HH:MM format 24h), shiftType (morning/evening/night/rest/holiday/change_shift or null if not explicitly changed), successor, description. Input: "${text}"`;
+                        const result = await callGeminiAPI(prompt, key, "application/json");
                         if(result.date) { $('date-input').value = result.date; updateShiftDisplay(result.date); }
-                        if(result.startTime) $('start-time').value = result.startTime; if(result.endTime) $('end-time').value = result.endTime;
-                        if(result.shiftType) $('shift-type').value = result.shiftType; if(result.successor) $('successor-input').value = result.successor;
+                        if(result.startTime) $('start-time').value = formatTime(result.startTime); 
+                        if(result.endTime) $('end-time').value = formatTime(result.endTime);
+                        if(result.shiftType && result.shiftType !== 'null') $('shift-type').value = result.shiftType;
+                        if(result.successor) $('successor-input').value = result.successor;
                         if(result.description) $('description').value = result.description;
                         $('close-smart-fill').click(); $('smart-fill-input').value = ''; showModal('موفق', 'اطلاعات پر شد.', 'باشه', 'bg-green-600');
                     } catch(err) { alert('خطا: ' + err.message); } finally { $('smart-fill-loading').classList.add('hidden'); }
@@ -645,7 +671,8 @@
                     const key = userSettings?.apiKey; if(!key) return alert('کلید API را در تنظیمات وارد کنید');
                     $('analysis-modal').classList.remove('hidden'); setTimeout(() => $('analysis-modal').classList.remove('opacity-0'), 10);
                     try {
-                        const reportMd = await window.geminiAnalyze(overtimeData);
+                        const prompt = `Analyze JSON overtime data for Iranian worker: ${JSON.stringify(overtimeData)}. Return concise Persian analysis with Markdown: Summary, Trend, Health Tip, Estimation.`;
+                        const reportMd = await callGeminiAPI(prompt, key);
                         const html = reportMd.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/^\* (.*$)/gm, '<li>$1</li>').replace(/\n/g, '<br>');
                         $('analysis-content').innerHTML = html;
                     } catch(err) { $('analysis-content').innerHTML = `<p class="text-red-500">خطا: ${err.message}</p>`; }
